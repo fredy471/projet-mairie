@@ -1,0 +1,21 @@
+{
+    "name": "human/mairie",
+    "description": "Gestion de projet municipale pour la ville",
+    "require-dev": {
+        "phpunit/phpunit": "10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Human\\Mairie\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "fredy471",
+            "email": "fredyaurel16@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    }
+}
