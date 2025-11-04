@@ -205,67 +205,73 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
 
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h3>AM</h3>
-                <small style="color: rgba(255,255,255,0.7);">Administration Municipale</small>
-            </div>
+        <div class="sidebar-header">
+            <h3>AM</h3>
+            <small style="color: rgba(255,255,255,0.7);">Administration Municipale</small>
+        </div>
 
-            <ul class="sidebar-menu">
-                <li class="sidebar-title">Menu Principal</li>
+        <ul class="sidebar-menu">
+            <li class="sidebar-title">Menu Principal</li>
+            
+            <li>
+                <a href="dashboard.php">
+                    <i class="material-icons-outlined">dashboard</i>
+                    <span>Tableau de bord</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="demande_attente.php">
+                    <i class="material-icons-outlined">pending_actions</i>
+                    <span>En attente</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="demande_traitee.php">
+                    <i class="material-icons">done_all</i>
+                    <span>Traitées</span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="modify_profil.php">
+                    <i class="material-icons-outlined">block</i>
+                    <span>Refusees</span>
+                </a>
+            </li>
 
-                <li>
-                    <a href="dashboard.php">
-                        <i class="material-icons-outlined">dashboard</i>
-                        <span>Tableau de bord</span>
-                    </a>
-                </li>
+            <li>
+                <a href="all_demande.php">
+                    <i class="material-icons-outlined">assignment</i>
+                    <span>Toutes les demandes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="rendez_vous.php" class="acitve">
+                    <span>rendez_vous</span>
+                </a>
+            </li>
+            
+            <li class="sidebar-title">Paramètres</li>
+            
+            <li>
+                <a href="modify_profil.php">
+                    <i class="material-icons-outlined">account_circle</i>
+                    <span>Mon Profil</span>
+                </a>
+            </li>
 
-                <li>
-                    <a href="all_demande.php">
-                        <i class="material-icons-outlined">assignment</i>
-                        <span>Toutes les demandes</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="demande_attente.php">
-                        <i class="material-icons-outlined">pending_actions</i>
-                        <span>En attente</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="demande_traitee.php">
-                        <i class="material-icons">done_all</i>
-                        <span>Traitées</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="demande_refusee.php" class="active">
-                        <i class="material-icons-outlined">block</i>
-                        <span>Refusees</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-title">Paramètres</li>
-
-                <li>
-                    <a href="modify_profil.php">
-                        <i class="material-icons-outlined">account_circle</i>
-                        <span>Mon Profil</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../logout.php">
-                        <i class="material-icons-outlined">exit_to_app</i>
-                        <span class='text-danger'>Déconnexion</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
+            <li class="sidebar-title">Système</li>
+            
+            <li>
+                <a href="../logout.php">
+                    <i class="material-icons-outlined">exit_to_app</i>
+                    <span class='text-danger'>Déconnexion</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
         <!-- Main Content -->
         <div class="main-content">
             <header class="">

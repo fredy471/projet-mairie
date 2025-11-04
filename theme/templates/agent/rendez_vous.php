@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 require '../bdd.php';
 session_start();
 
+
 if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
     header('location:../login.php');
     exit;
@@ -19,11 +20,13 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
     $stmt->execute();
     $table = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    //total des demandes
-    $req = 'SELECT * FROM demandes d JOIN users u ON d.id_citoyen=u.id_user ORDER BY date DESC';
-    $stt = $conn->prepare($req);
-    $stt->execute();
-    $demandes = $stt->fetchAll(PDO::FETCH_ASSOC);
+   //liste des rendez-vous
+
+   $sql='SELECT * FROM rendez_vous r JOIN users u ON r.id_citoyen=u.id_user JOIN demandes d ON r.id_demande=d.id_demande';
+   $prep=$conn->prepare($sql);
+   $prep->execute();
+   $tableau=$prep->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 <!DOCTYPE html>
@@ -320,39 +323,31 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
             <div class="container" style='margin-top:100px; margin-bottom:60px;'>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">📋 Liste des demandes</h5>
+                        <h5 class="card-title">📋 Liste des rendez-vous</h5>
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th>Code demande</th>
-                                        <th>Citoyen</th>
-                                        <th>Type</th>
-                                        <th>Date de soumission</th>
-                                        <th>Statut</th>
+                                        <th>Nom</th>
+                                        <th>Date</th>
+                                        <th>Heure</th>
+                                        <th>Demande</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($demandes as $demande) {?>
+                                    foreach ($tableau as $tab) {?>
                                             <tr>
-                                                <td><?= htmlspecialchars($demande['code_demande']) ?></td>
-                                                <td><?= htmlspecialchars($demande['nom']) ?></td>
-                                                <td><?= htmlspecialchars($demande['types']) ?></td>
-                                                <td><?= date('d/m/Y', strtotime($demande['date'])) ?></td>
+                                                <td><?= htmlspecialchars($tab['nom']) ?></td>
+                                                <td><?= htmlspecialchars($tab['date']) ?></td>
+                                                <td><?= htmlspecialchars($tab['heure']) ?></td>
+                                                <td><?= htmlspecialchars($tab['types']) ?></td>
                                                 <td>
-                                                    <?php
-                                                        if ($demande['statut'] == 'en attente') {
-                                                            echo '<span class="badge bg-warning text-dark">En attente</span>';
-                                                        } elseif ($demande['statut'] == 'valide') {
-                                                            echo '<span class="badge bg-success">Traité</span>';
-                                                        } elseif ($demande['statut'] == 'rejete') {
-                                                            echo '<span class="badge bg-danger text-white">Rejetée</span>';
-                                                        } else {
-                                                            echo '<span class="badge bg-secondary">Inconnue</span>';
-                                                        }
-                                                    ?>
+                                                    <a href="treat_rend.php?id=1&id_demande=<?=$tab['id_demande']?>" class="bg-success text-white btn-sm">valider</a>
+                                                    <a href="treat_rend.php?id=0&id_demande=<?=$tab['id_demande']?>" class="bg-danger text-white btn-sm">Refuser</a>
                                                 </td>
+                                                
                                             </tr>
                                     <?php 
                                     }

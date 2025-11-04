@@ -239,13 +239,6 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
                 </li>
 
                 <li>
-                    <a href="all_demande.php">
-                        <i class="material-icons-outlined">assignment</i>
-                        <span>Toutes les demandes</span>
-                    </a>
-                </li>
-
-                <li>
                     <a href="demande_attente.php">
                         <i class="material-icons-outlined">pending_actions</i>
                         <span>En attente</span>
@@ -263,6 +256,13 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
                     <a href="demande_refusee.php">
                         <i class="material-icons-outlined">block</i>
                         <span>Refusees</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="all_demande.php">
+                        <i class="material-icons-outlined">assignment</i>
+                        <span>Toutes les demandes</span>
                     </a>
                 </li>
 

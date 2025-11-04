@@ -218,13 +218,6 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
             </li>
             
             <li>
-                <a href="all_demande.php">
-                    <i class="material-icons-outlined">assignment</i>
-                    <span>Toutes les demandes</span>
-                </a>
-            </li>
-            
-            <li>
                 <a href="demande_attente.php">
                     <i class="material-icons-outlined">pending_actions</i>
                     <span>En attente</span>
@@ -232,16 +225,28 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
             </li>
             
             <li>
-                <a href="demande_traitee.php" class="active">
+                <a href="demande_traitee.php">
                     <i class="material-icons">done_all</i>
                     <span>Traitées</span>
                 </a>
             </li>
-
+            
             <li>
-                <a href="demande_refusee.php">
+                <a href="modify_profil.php">
                     <i class="material-icons-outlined">block</i>
                     <span>Refusees</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="all_demande.php">
+                    <i class="material-icons-outlined">assignment</i>
+                    <span>Toutes les demandes</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="rendez_vous.php" class="acitve">
+                    <span>rendez_vous</span>
                 </a>
             </li>
             
@@ -253,6 +258,8 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
                     <span>Mon Profil</span>
                 </a>
             </li>
+
+            <li class="sidebar-title">Système</li>
             
             <li>
                 <a href="../logout.php">
@@ -262,7 +269,6 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
             </li>
         </ul>
     </aside>
-
     <!-- Main Content -->
     <div class="main-content">
         <header class="">
