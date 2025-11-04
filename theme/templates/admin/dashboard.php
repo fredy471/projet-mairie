@@ -242,14 +242,14 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
                 <li class="sidebar-title">Menu Principal</li>
 
                 <li>
-                    <a href="dashboard.php" class="active">
+                    <a href="dashboard.php">
                         <i class="material-icons-outlined">dashboard</i>
                         <span>Tableau de bord</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="all_demande.php">
+                    <a href="all_demande.php" class="active">
                         <i class="material-icons-outlined">assignment</i>
                         <span>Toutes les demandes</span>
                     </a>
@@ -270,20 +270,29 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
                 </li>
 
                 <li>
-                    <a href="demande_refusee.php">
+                    <a href="modify_profil.php">
                         <i class="material-icons-outlined">block</i>
                         <span>Refusees</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="agent_list.php">
+                        <i class="material-icons-outlined">assignment</i>
+                        <span>Agent</span>
                     </a>
                 </li>
 
                 <li class="sidebar-title">Paramètres</li>
 
                 <li>
-                    <a href="modify_profil.php">
+                    <a href="modify_profile.php">
                         <i class="material-icons-outlined">account_circle</i>
                         <span>Mon Profil</span>
                     </a>
                 </li>
+
+                <li class="sidebar-title">Système</li>
 
                 <li>
                     <a href="../logout.php">

@@ -9,7 +9,7 @@ $error = [];
 $success = ''; // Variable pour le succès
 
 if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 }else{
 
@@ -31,10 +31,6 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
                 $check = $conn->prepare("SELECT id_user FROM users WHERE email = :email");
                 $check->execute(['email' => $email]);
     
-                if ($check->rowCount() > 0) {
-                    $error[] = "Cet email est déjà utilisé.";
-                }  
-
                 if(empty($error)){
                     $insert = $conn->prepare("
                         INSERT INTO contact (nom, prenom, numero, email, message)
@@ -70,6 +66,7 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
     <title>Contact | AM</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <link href="../../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -78,34 +75,19 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
     <link href="../../assets/css/custom.css" rel="stylesheet">
 </head>
 <body>
+        <?php if ($success === 'success'): ?>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Message envoyé !',
+                    text: 'Votre message a été envoyé avec succès. Nous vous répondrons bientôt.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            </script>
+        <?php endif; ?>
       <?php require 'header.php' ?>
 
-    <!-- Notification de succès -->
-    <?php if ($success === 'success') { ?>
-        <div class="success-notification" id="notification">
-            <button class="close-notif" onclick="hideNotification()">
-                <i class="fa-solid fa-times"></i>
-            </button>
-            <div class="icon-wrapper">
-                <i class="fa-solid fa-check-circle" style="font-size: 1.5rem;"></i>
-            </div>
-            <h5>Message envoyé avec succès !</h5>
-            <p>Nous avons bien reçu votre message.<br>Nous vous répondrons dans les plus brefs délais.</p>
-        </div>
-
-        <script>
-            function hideNotification() {
-                const notification = document.getElementById('notification');
-                notification.classList.add('hide');
-                setTimeout(function() {
-                    notification.remove();
-                }, 500);
-            }
-
-            // Masquer automatiquement après 5 secondes
-            setTimeout(hideNotification, 5000);
-        </script>
-    <?php } ?>
     
     <main>
         <div class="container" style='margin-top:150px;'>

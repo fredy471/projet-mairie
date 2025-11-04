@@ -38,49 +38,60 @@ if (isset($_SESSION['id']) && $_SESSION['role'] == 'agent') {
         $stmt->bindParam(':id_demande', $id_demande, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            if ($statut === 'valide') {
-                // Récupération de l'email du citoyen
-                $sql = "SELECT email, code_demande, nom FROM demandes d JOIN users u ON d.id_citoyen= u.id_user WHERE id_demande= :id_demande";
-                $stmtEmail = $conn->prepare($sql);
-                $stmtEmail->bindParam(':id_demande', $id_demande, PDO::PARAM_INT);
-                $stmtEmail->execute();
-                $citoyen = $stmtEmail->fetch(PDO::FETCH_ASSOC);
 
-                if ($citoyen) {
-                    $mail = new PHPMailer(true);
+            // Récupération de l'email du citoyen
+            $sql = "SELECT email, code_demande, nom FROM demandes d JOIN users u ON d.id_citoyen= u.id_user WHERE id_demande= :id_demande";
+            $stmtEmail = $conn->prepare($sql);
+            $stmtEmail->bindParam(':id_demande', $id_demande, PDO::PARAM_INT);
+            $stmtEmail->execute();
+            $citoyen = $stmtEmail->fetch(PDO::FETCH_ASSOC);
 
-                    try {
-                        // 🔧 Configuration SMTP
-                        $mail->isSMTP();
-                        $mail->Host = 'smtp.gmail.com';
-                        $mail->SMTPAuth = true;
-                        $mail->Username = 'fredyaurel16@gmail.com'; // ton adresse Gmail
-                        $mail->Password = 'rxov wsse dzsn jess'; // mot de passe d’application Gmail
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                        $mail->Port = 587;
+            if ($citoyen) {
+                $mail = new PHPMailer(true);
 
-                        // 👤 Expéditeur et destinataire
-                        $mail->setFrom('fredyaurel16@gmail.com', 'Mairie');
-                        $mail->addAddress($citoyen['email'], $citoyen['nom']);
+                try {
+                    // 🔧 Configuration SMTP
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'fredyaurel16@gmail.com'; // ton adresse Gmail
+                    $mail->Password = 'rxov wsse dzsn jess'; // mot de passe d’application Gmail
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
 
-                        // 💬 Contenu du message
-                        $mail->isHTML(true);
-                        $mail->CharSet = 'UTF-8'; // <- ici tu mets le charset
+                    // 👤 Expéditeur et destinataire
+                    $mail->setFrom('fredyaurel16@gmail.com', 'Mairie');
+                    $mail->addAddress($citoyen['email'], $citoyen['nom']);
+
+                    // 💬 Contenu du message
+                    $mail->isHTML(true);
+                    $mail->CharSet = 'UTF-8'; // <- ici tu mets le charset
+
+
+                    if ($statut == 'valide') {
                         $mail->Subject = 'Votre demande a été validée ✅';
                         $mail->Body = "<p>Bonjour <b>{$citoyen['nom']}</b>,</p>
                                            <p>Votre demande (Code de demande: {$code_demande}) a été validée par la mairie.Vous pouvez maintenant vous connectez pour prendre un rendez-vous</p>
                                            <p>Merci de votre confiance.</p>
                                            <p><b>La Mairie</b></p>";
                         $mail->AltBody = "Bonjour {$citoyen['nom']}, votre demande a été validée par la mairie.";
-
-                        $mail->send();
-                    } catch (Exception $e) {
-                        $error[] = "❌ Mailerror : {$mail->ErrorInfo}";
+                    } elseif ($statut == 'rejete') {
+                        $mail->Subject = 'Votre demande a été rejetée ❗';
+                        $mail->Body = "<p>Bonjour <b>{$citoyen['nom']}</b>,</p>
+                                           <p>Votre demande (Code de demande: {$code_demande}) a été rejetée par la mairie.<b> Motif : {$demande['commentaire']}</p>
+                                           <p>Merci de votre confiance.</p>
+                                           <p><b>La Mairie</b></p>";
+                        $mail->AltBody = "Bonjour {$citoyen['nom']}, votre demande a été validée par la mairie.";
                     }
+
+
+
+                    $mail->send();
+                } catch (Exception $e) {
+                    $error[] = "❌ Mailerror : {$mail->ErrorInfo}";
                 }
-            } else {
-                $error[] = 'donnees invalides pour le traitement';
             }
+
 
             // ✅ Redirection hors du if
             header('location:demande_attente.php?success=1');

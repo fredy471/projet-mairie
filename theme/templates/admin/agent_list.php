@@ -13,17 +13,11 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
     $role = $_SESSION['role'];
 
     //recuperation des donnes de l'agent
-    $sql_req = 'SELECT * FROM users WHERE id_user= :id_user';
+    $sql_req = 'SELECT * FROM users  WHERE role="agent"';
     $stmt = $conn->prepare($sql_req);
-    $stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
     $stmt->execute();
-    $table = $stmt->fetch(PDO::FETCH_ASSOC);
+    $table = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //Demandes rejetee
-    $req = 'SELECT * FROM demandes d JOIN users u ON d.id_agent=u.id_user WHERE statut="rejete" ORDER BY date DESC';
-    $stt = $conn->prepare($req);
-    $stt->execute();
-    $refusees = $stt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
     <!DOCTYPE html>
@@ -247,8 +241,8 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
                 </li>
 
                 <li>
-                    <a href="dashboard.php">
-                        <i class="material-icons-outlined">assignment</i>>
+                    <a href="agent_list.php">
+                        <i class="material-icons-outlined">assignment</i>
                         <span>Agent</span>
                     </a>
                 </li>
@@ -320,36 +314,55 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
             </header>
 
             <main class="">
-                <div class="container" style="margin-top: 100px;">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">📋 demandes refusees</h5>
+
+                <div class="container" style='margin-top:100px; margin-bottom:60px;'>
+                    <div class="row">
+                        <div class="card-body col-md-10 mx-auto">
+                            <h5 class="card-title"><i class="fa-solid fa-users"></i> Liste des agents</h5>
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle">
+                                <table class="table table-hover  table-responsive">
                                     <thead class="table-primary">
                                         <tr>
-                                            <th>Code demande</th>
-                                            <th>Citoyen</th>
-                                            <th>Type</th>
-                                            <th>Date de soumission</th>
+                                            <th>ID agent</th>
+                                            <th>Nom</th>
+                                            <th>Prenom</th>
+                                            <th>telephone</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($refusees as $refusee) {?>
-                                            
-                                                <tr>
-                                                    <td><?= htmlspecialchars($refusee['code_demande']) ?></td>
-                                                    <td><?= htmlspecialchars($refusee['nom']) ?></td>
-                                                    <td class="badge"><?= htmlspecialchars($refusee['types']) ?></td>
-                                                    <td><?= date('d/m/Y', strtotime($refusee['date'])) ?></td>
-                                                </tr>
-                                        <?php 
-                                        } ?>
+                                        foreach ($table as $tab) { ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($tab['id_user']) ?></td>
+                                                <td><?= htmlspecialchars($tab['nom']) ?></td>
+                                                <td><?= htmlspecialchars($tab['prenom']) ?></td>
+                                                <td class=""><?= htmlspecialchars($tab['tel']) ?></td>
+                                                <td class=""><?= htmlspecialchars($tab['email']) ?></td>
+                                                <td><a href="modify_agent.php?id=1&id_agent=<?= $tab['id_user'] ?>" class="">Modifier</a> </td>
+                                                <td> <a href="modify_agent.php?id=0&id_agent=<?= $tab['id_user'] ?>" class='text-danger'>Supprimer</a></td>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
+                        <div class="col-md-12 text-center">
+                            <div class="p-4 bg-light rounded shadow-sm">
+                                <p class="mb-3 fs-5 text-muted">
+                                    Gérez facilement votre équipe en ajoutant de nouveaux agents pour traiter les demandes des citoyens.
+                                </p>
+                                <a href="create_agent.php" class="nav-link bg-primary text-white col-md-6 mx-auto rounded py-2">
+                                    <i class="fa-solid fa-user-plus me-2"></i>Créer un nouvel agent
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </main>
