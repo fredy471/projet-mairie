@@ -8,7 +8,7 @@ require '../bdd.php';
 
 $error=[];
 if(!isset($_SESSION['id']) || $_SESSION['role']!='agent'){
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 }else{
 
@@ -35,8 +35,8 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='agent'){
         $prenom=htmlspecialchars($_POST['prenom']);
         $email=trim($_POST['email']);
         $tel=(int) trim($_POST['tel']);
-        $psd=trim($_POST['psd']);
-        $actu_psd=trim($_POST['actu_psd']);
+        $psd=password_hash($_POST['psd'],PASSWORD_DEFAULT);
+        $actu_psd=password_hash($_POST['actu_psd'],PASSWORD_DEFAULT);
 
       if(!empty($nom) && !empty($prenom) && !empty($email) && !empty($tel)){
 
@@ -44,9 +44,9 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='agent'){
             $sql_req='UPDATE users SET nom= :nom, prenom= :prenom, email= :email, tel= :tel WHERE id_user= :id_user';
             $stt=$conn->prepare($sql_req);
             $stt->bindParam(':nom',$nom,PDO::PARAM_STR);
-            $stt->bindParam(':prenom',$nom,PDO::PARAM_STR);
-            $stt->bindParam(':email',$nom,PDO::PARAM_STR);
-            $stt->bindParam(':tel',$nom,PDO::PARAM_STR);
+            $stt->bindParam(':prenom',$prenom,PDO::PARAM_STR);
+            $stt->bindParam(':email',$email,PDO::PARAM_STR);
+            $stt->bindParam(':tel',$tel,PDO::PARAM_STR);
             $stt->bindParam(':id_user',$id,PDO::PARAM_INT);
             
             if($stt->execute()){
@@ -62,9 +62,9 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='agent'){
                     $sql_req='UPDATE users SET nom= :nom, prenom= :prenom, email= :email, tel= :tel , psd= :psd WHERE id_user= :id_user';
                     $stt=$conn->prepare($sql_req);
                     $stt->bindParam(':nom',$nom,PDO::PARAM_STR);
-                    $stt->bindParam(':prenom',$nom,PDO::PARAM_STR);
-                    $stt->bindParam(':email',$nom,PDO::PARAM_STR);
-                    $stt->bindParam(':tel',$nom,PDO::PARAM_STR);
+                    $stt->bindParam(':prenom',$prenom,PDO::PARAM_STR);
+                    $stt->bindParam(':email',$email,PDO::PARAM_STR);
+                    $stt->bindParam(':tel',$tel,PDO::PARAM_STR);
                     $stt->bindParam(':id_user',$id,PDO::PARAM_INT);
                     $stt->bindParam(':psd',$psd,PDO::PARAM_STR);
 

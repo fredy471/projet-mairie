@@ -8,7 +8,7 @@ require '../bdd.php';
 
 $error = [];
 if (!isset($_SESSION['id']) || $_SESSION['role'] != 'citoyen') {
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 } else {
 
@@ -98,7 +98,6 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] != 'citoyen') {
         <meta name="description" content="Responsive Admin Dashboard Template">
         <meta name="keywords" content="admin,dashboard">
         <meta name="author" content="stacks">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
@@ -400,6 +399,7 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] != 'citoyen') {
         <script src="../../assets/js/connect.min.js"></script>
         <script src="../../assets/plugins/apexcharts/dist/apexcharts.min.js"></script>
         <script src="../../assets/js/pages/dashboard.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
 
 

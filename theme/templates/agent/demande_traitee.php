@@ -6,7 +6,7 @@ require '../bdd.php';
 session_start();
 
 if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 } else {
     $id_user = $_SESSION['id'];

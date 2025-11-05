@@ -8,7 +8,7 @@ require '../bdd.php';
 
 $error=[];
 if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 }else{
 
@@ -21,12 +21,6 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
     $stmt->execute();
     $table=$stmt->fetch(PDO::FETCH_ASSOC);
 
-    //recuperation des demandes en attente de l'utilisateur
-    $sql_req_one="SELECT * FROM demandes WHERE id_citoyen=:id_user AND statut='en attente' ORDER BY date DESC";
-    $stmt_demande=$conn->prepare($sql_req_one);
-    $stmt_demande->bindParam(':id_user',$_SESSION['id'],PDO::PARAM_INT);
-    $stmt_demande->execute();
-    $attentes=$stmt_demande->fetchAll(PDO::FETCH_ASSOC);
 
    if($_SERVER['REQUEST_METHOD']=='POST'){
 
@@ -34,9 +28,9 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
         $nom=htmlspecialchars($_POST['nom']);
         $prenom=htmlspecialchars($_POST['prenom']);
         $email=trim($_POST['email']);
-        $tel=(int) trim($_POST['tel']);
-        $psd=trim($_POST['psd']);
-        $actu_psd=trim($_POST['actu_psd']);
+        $tel= trim($_POST['tel']);
+        $psd=password_hash($_POST['psd'],PASSWORD_DEFAULT);
+        $actu_psd=password_hash($_POST['actu_psd'],PASSWORD_DEFAULT);
 
       if(!empty($nom) && !empty($prenom) && !empty($email) && !empty($tel)){
 
@@ -44,9 +38,9 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
             $sql_req='UPDATE users SET nom= :nom, prenom= :prenom, email= :email, tel= :tel WHERE id_user= :id_user';
             $stt=$conn->prepare($sql_req);
             $stt->bindParam(':nom',$nom,PDO::PARAM_STR);
-            $stt->bindParam(':prenom',$nom,PDO::PARAM_STR);
-            $stt->bindParam(':email',$nom,PDO::PARAM_STR);
-            $stt->bindParam(':tel',$nom,PDO::PARAM_STR);
+            $stt->bindParam(':prenom',$prenom,PDO::PARAM_STR);
+            $stt->bindParam(':email',$email,PDO::PARAM_STR);
+            $stt->bindParam(':tel',$tel,PDO::PARAM_STR);
             $stt->bindParam(':id_user',$id,PDO::PARAM_INT);
             
             if($stt->execute()){
@@ -62,9 +56,9 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
                     $sql_req='UPDATE users SET nom= :nom, prenom= :prenom, email= :email, tel= :tel , psd= :psd WHERE id_user= :id_user';
                     $stt=$conn->prepare($sql_req);
                     $stt->bindParam(':nom',$nom,PDO::PARAM_STR);
-                    $stt->bindParam(':prenom',$nom,PDO::PARAM_STR);
-                    $stt->bindParam(':email',$nom,PDO::PARAM_STR);
-                    $stt->bindParam(':tel',$nom,PDO::PARAM_STR);
+                    $stt->bindParam(':prenom',$prenom,PDO::PARAM_STR);
+                    $stt->bindParam(':email',$amail,PDO::PARAM_STR);
+                    $stt->bindParam(':tel',$tel,PDO::PARAM_STR);
                     $stt->bindParam(':id_user',$id,PDO::PARAM_INT);
                     $stt->bindParam(':psd',$psd,PDO::PARAM_STR);
 
@@ -146,7 +140,7 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
                                     </div>
                                     <div class="form-group">
                                         <label for="phone" class="form-label">Numéro de téléphone</label>
-                                        <input type="text" class="form-control" id="phone" name="tel" value="<?= htmlspecialchars($table['tel']) ?>" required>
+                                        <input type="number" class="form-control" id="phone" name="tel" value="<?= htmlspecialchars($table['tel']) ?>" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="psd" class="form-label">Actuel Mot de passe</label>

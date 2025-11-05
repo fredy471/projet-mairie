@@ -8,7 +8,7 @@ require '../bdd.php';
 
 $error=[];
 if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 }else{
 

@@ -6,7 +6,7 @@ require '../bdd.php';
 session_start();
 
 if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 } else {
     $id_user = $_SESSION['id'];
@@ -54,6 +54,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
         <link href="../../assets/css/connect.min.css" rel="stylesheet">
         <link href="../../assets/css/admin2.css" rel="stylesheet">
         <link href="../../assets/css/custom.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <style>
             /* Sidebar Styles */
@@ -209,6 +210,19 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
     </head>
 
     <body>
+
+            <?php    if (isset($_GET['success']) && is_numeric($_GET['success'])): ?>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Traitement effectué !',
+                    text: 'Votre traitment a été effectué avec succès.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            </script>
+        <?php endif; ?>
+
         <!-- Sidebar Overlay -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -330,10 +344,6 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['role'])) {
 
             <main class="">
                 <div class="container" style='margin-top:100px; margin-bottom:100px;'>
-                   <?php if (isset($_GET['success'])) {
-                    echo "<div class='alert alert-success'>Demande traitée avec succès ✅</div>";
-                    }?>
-
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">📋 Liste des demandes en attente</h5>

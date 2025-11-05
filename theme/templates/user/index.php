@@ -7,7 +7,7 @@ session_start();
 require '../bdd.php';
 
 if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
-    header('location:../login.php');
+    header('location:../logout.php');
     exit;
 }else{
 
@@ -172,7 +172,7 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
                             <div class="card-body">
                                 <i class="fa-solid fa-envelope fa-3x mb-3" style="color:#2C3E91;"></i>
                                 <h5 class="card-title   ">Contactez-nous</h5>
-                                <p class="card-text">Besoin d'aide ou d'informations supplémentaires ? Contactez notre équipe municipale via le formulaire de contact en ligne.</p>
+                                <p class="card-text">Besoin d'informations supplémentaires ? Contactez notre équipe municipale via le formulaire de contact en ligne.</p>
                                 <a href="contact.php" class="btn btn-primary" style="background-color:#2C3E91; border:none;">Accéder</a>
                             </div>
                         </div>

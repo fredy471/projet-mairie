@@ -13,6 +13,7 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
     exit;
 }else{
 
+
     $sql="SELECT * FROM users WHERE id_user=:id";
     $stmt=$conn->prepare($sql);
     $stmt->bindParam(':id',$_SESSION['id'],PDO::PARAM_INT);
@@ -119,7 +120,7 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
                                         <i class="fa-solid fa-user"></i> Votre nom
                                     </label>
                                     <input type="text" class="form-control" id="nom" name='nom' 
-                                           value="<?= htmlspecialchars($table['nom']) ?>" required>
+                                           required>
                                 </div>
 
                                 <div class="mb-3">
@@ -127,21 +128,21 @@ if(!isset($_SESSION['id']) || $_SESSION['role']!='citoyen'){
                                         <i class="fa-solid fa-user"></i> Votre prénom
                                     </label>
                                     <input type="text" class="form-control" id="prenom" name='prenom' 
-                                           value="<?= htmlspecialchars($table['prenom']) ?>" required>
+                                            required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="numero" class="form-label">
                                         <i class="fa-solid fa-phone"></i> Votre numéro
                                     </label>
-                                    <input type="number" class="form-control" id="numero" name='numero' required>
+                                    <input type="number" class="form-control" id="numero" name='numero' value='<?= htmlspecialchars($table['tel']) ?>'required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">
                                         <i class="fa-solid fa-envelope"></i> Votre email
                                     </label>
-                                    <input type="email" class="form-control" id="email" name='email' required>
+                                    <input type="email" class="form-control" id="email" name='email' value='<?= htmlspecialchars($table['email']) ?>'required>
                                 </div>
 
                                 <div class="mb-4">

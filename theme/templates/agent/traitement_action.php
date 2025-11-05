@@ -71,7 +71,7 @@ if (isset($_SESSION['id']) && $_SESSION['role'] == 'agent') {
                     if ($statut == 'valide') {
                         $mail->Subject = 'Votre demande a été validée ✅';
                         $mail->Body = "<p>Bonjour <b>{$citoyen['nom']}</b>,</p>
-                                           <p>Votre demande (Code de demande: {$code_demande}) a été validée par la mairie.Vous pouvez maintenant vous connectez pour prendre un rendez-vous</p>
+                                           <p>Votre demande Code de demande: {$citoyen['$code_demande']} a été validée par la mairie.Vous pouvez maintenant vous connectez pour prendre un rendez-vous</p>
                                            <p>Merci de votre confiance.</p>
                                            <p><b>La Mairie</b></p>";
                         $mail->AltBody = "Bonjour {$citoyen['nom']}, votre demande a été validée par la mairie.";
@@ -84,18 +84,15 @@ if (isset($_SESSION['id']) && $_SESSION['role'] == 'agent') {
                         $mail->AltBody = "Bonjour {$citoyen['nom']}, votre demande a été validée par la mairie.";
                     }
 
-
-
-                    $mail->send();
+                    if( $mail->send()){
+                    // ✅ Redirection hors du if
+                    header('location:demande_attente.php?success=1');
+                    exit;
+                    }
                 } catch (Exception $e) {
                     $error[] = "❌ Mailerror : {$mail->ErrorInfo}";
                 }
             }
-
-
-            // ✅ Redirection hors du if
-            header('location:demande_attente.php?success=1');
-            exit;
         } else {
             $error[] = 'citoyen null';
         }
