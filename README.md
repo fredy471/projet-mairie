@@ -1,2 +1,2 @@
 # projet-mairie
-projet fictif 
+projet fictif . IL s'agit de la plateforme e-service de la mairie
